@@ -8,18 +8,9 @@ tags:
     - Network Tools
 weight: 1       # You can add weight to some posts to override the default sorting (date descending)
 ---
-RUST写的开源高性能L4网络PING工具，具有TCP及UDP PING。
+
 作者[GITHUB](https://github.com/r12f/rnp)
 
-links:
-  - title: GitHub
-    description: GitHub is the world's largest software development platform.
-    website: https://github.com
-    image: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-  - title: TypeScript
-    description: TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.
-    website: https://www.typescriptlang.org
-    image: ts-logo-128.jpg
     
 ### 简单示例
 ```
