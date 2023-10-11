@@ -1,7 +1,7 @@
 ---
 title: PING工具：RNP
 description: RUST写的开源高性能L4网络PING工具，具有TCP及UDP PING。
-date: 2022-10-11 00:00:00+0000
+date: 2023-10-11 00:00:00+0000
 categories:
     - Network Tools
 tags:
