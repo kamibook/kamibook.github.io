@@ -1,4 +1,3 @@
-
 ---
 title: RUST跨平台编译
 description: RUSTLinux编译多个其它平台可执行文件。
@@ -8,6 +7,7 @@ categories:
 tags:
     - rust
 weight: 1
+
 ---
 
 
