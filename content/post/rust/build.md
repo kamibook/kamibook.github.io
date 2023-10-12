@@ -1,3 +1,15 @@
+
+---
+title: RUST跨平台编译
+description: RUSTLinux编译多个其它平台可执行文件。
+date: 2023-10-12 00:00:00+0000
+categories:
+    - dev
+tags:
+    - rust
+weight: 1
+---
+
 ### 简介
 
 交叉编译就是在一个平台上可以编译生成另一个平台的可执行文件。主要介绍如何在Linux系统上编译生成多个系统的可执行文件。 
