@@ -2,6 +2,7 @@
 title: RUST跨平台编译
 description: Linux上编译其它平台可执行文件。
 date: 2023-10-12 00:00:00+0000
+slug: rust
 categories:
     - dev
 tags:
