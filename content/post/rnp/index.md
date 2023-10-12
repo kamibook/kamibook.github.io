@@ -5,11 +5,11 @@ date: 2023-10-11 00:00:00+0000
 categories:
     - Network Tools
 tags:
-    - Network Tools
-weight: 1       # You can add weight to some posts to override the default sorting (date descending)
+    - Ping
+weight: 1
 ---
 
-作者[GITHUB](https://github.com/r12f/rnp)
+## 作者[GITHUB](https://github.com/r12f/rnp)
 
     
 ### 简单示例
