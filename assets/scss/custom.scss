@@ -1,3 +1,15 @@
 /*
     You can add your own custom styles here.
 */
+.widget--toc {
+    #TableOfContents {
+        li {
+            margin: 2px 0 2px 4px;
+            padding: 2px;
+            & > ul {
+                margin-top: 2px;
+                margin-bottom: -2px;
+            }
+        }
+    }
+}
