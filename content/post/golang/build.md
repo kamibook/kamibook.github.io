@@ -97,3 +97,22 @@ windows/amd64
 windows/arm
 windows/arm64
 ```
+
+### Windows平台终端设置变量
+
+#### PowerShell
+
+```
+$env:CGO_ENABLED="0"
+$env:GOOS="linux"
+$env:GOARCH="amd64"
+```
+
+#### CMD  
+
+```
+SET CGO_ENABLED=0
+SET GOOS=darwin
+SET GOARCH=amd64
+```
+
