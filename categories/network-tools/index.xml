@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Network Tools on KamiBook</title><link>https://kamibook.com/categories/network-tools/</link><description>Recent content in Network Tools on KamiBook</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Example Person</copyright><lastBuildDate>Sun, 15 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://kamibook.com/categories/network-tools/index.xml" rel="self" type="application/rss+xml"/><item><title>Iptables：修改源IP</title><link>https://kamibook.com/p/iptablessnat/</link><pubDate>Sun, 15 Oct 2023 00:00:00 +0000</pubDate><guid>https://kamibook.com/p/iptablessnat/</guid><description>&lt;h3 id="关闭原防火墙">关闭原防火墙&lt;/h3>
+&lt;p>操作环境&lt;/p>
+&lt;p>• Almalinux9&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">systemctl stop firewalld
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl disable firewalld
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="安装iptables-services">安装iptables-services&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">yum install iptables-services -y #安装iptables
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl start iptables #启动
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl enable iptables #开机启动
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="开启端口非必须">开启端口（非必须）&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport 10000:50000 -j ACCEPT
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">iptables -I INPUT -m state --state NEW -m udp -p udp --dport 10000:50000 -j ACCEPT
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="创建用户">创建用户&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">useradd -r a1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">useradd -r a2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">useradd -r a3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">useradd -r a4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">useradd -r a5
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="修改用户源ip">修改用户源IP&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">iptables -t nat -A POSTROUTING -m owner --uid-owner a1 -j SNAT --to-source 1.1.1.1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>备注：以该用户启动的程序，TCP出网IP为设定的IP，一般情况不支持UDP。&lt;/p>
+&lt;h3 id="保存规则">保存规则&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">service iptables save
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item><item><title>PING工具：RNP</title><link>https://kamibook.com/p/rnp/</link><pubDate>Wed, 11 Oct 2023 00:00:00 +0000</pubDate><guid>https://kamibook.com/p/rnp/</guid><description>&lt;h2 id="作者githubhttpsgithubcomr12frnp">作者&lt;a class="link" href="https://github.com/r12f/rnp" target="_blank" rel="noopener"
+>GITHUB&lt;/a>&lt;/h2>
+&lt;h3 id="简单示例">简单示例&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">PS D:\bin&amp;gt; ./rnp.exe 1.1.1.1:22
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Rnp - r12f (r12f.com, github.com/r12f) - A simple layer 4 ping tool for cloud.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Start testing TCP 1.1.1.1:22:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reaching TCP 1.1.1.1:22 from 192.168.31.86:18485 succeeded: RTT=23.80ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reaching TCP 1.1.1.1:22 from 192.168.31.86:18486 succeeded: RTT=23.83ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reaching TCP 1.1.1.1:22 from 192.168.31.86:18487 succeeded: RTT=20.84ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reaching TCP 1.1.1.1:22 from 192.168.31.86:18488 succeeded: RTT=24.95ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== Connect statistics for TCP 1.1.1.1:22 ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">- Connects: Sent = 4, Succeeded = 4, Failed = 0 (0.00%).
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">- Round trip time: Minimum = 20.84ms, Maximum = 24.95ms, Average = 23.35ms.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PS D:\bin&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="多线程并发并省略输出">多线程并发并省略输出&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">PS D:\bin&amp;gt; ./rnp.exe 1.1.1.1:22 -p 10 -n 100 -q
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Rnp - r12f (r12f.com, github.com/r12f) - A simple layer 4 ping tool for cloud.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Start testing TCP 1.1.1.1:22:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">100 pings finished.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== Connect statistics for TCP 1.1.1.1:22 ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">- Connects: Sent = 100, Succeeded = 100, Failed = 0 (0.00%).
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">- Round trip time: Minimum = 17.49ms, Maximum = 28.72ms, Average = 23.27ms.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PS D:\bin&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>参数&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">-p 10 #设置线程数，默认1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-n 100 # 设置PING数，默认4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-q #设置省略PING输出，默认全部输出
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item><item><title>终端简易设置代理</title><link>https://kamibook.com/p/httpproxy/</link><pubDate>Wed, 11 Oct 2023 00:00:00 +0000</pubDate><guid>https://kamibook.com/p/httpproxy/</guid><description>&lt;h3 id="linux">Linux&lt;/h3>
+&lt;h4 id="http-proxy">HTTP PROXY&lt;/h4>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="k">export&lt;/span> &lt;span class="n">ALL_PROXY&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">http&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="mf">127.0&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">0.1&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">1080&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="socks5-proxy">SOCKS5 PROXY&lt;/h4>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="k">export&lt;/span> &lt;span class="n">ALL_PROXY&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">socks5&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="mf">127.0&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">0.1&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">1080&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="取消代理">取消代理&lt;/h4>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">unset http_proxy
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">unset https_proxy
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="windows">Windows&lt;/h3>
+&lt;h4 id="powershell">PowerShell&lt;/h4>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">$env:ALL_PROXY=&amp;#34;http://127.0.0.1:7890&amp;#34;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>取消代理&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">$env:ALL_PROXY=&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="cmd">CMD&lt;/h4>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">set http_proxy=http://127.0.0.1:1080
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set https_proxy=http://127.0.0.1:1080
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>取消代理&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">set http_proxy=
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set https_proxy=
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="认证">认证&lt;/h3>
+&lt;p>适用于以上全部&lt;/p>
+&lt;p>&lt;code>http://127.0.0.1:1080&lt;/code> 改为 &lt;code> http://user:pass@127.0.0.1:1080&lt;/code>&lt;/p>
+&lt;h3 id="注意部分软件是不走该proxy需要根据软件另行设置">注意：部分软件是不走该Proxy，需要根据软件另行设置。&lt;/h3></description></item></channel></rss>

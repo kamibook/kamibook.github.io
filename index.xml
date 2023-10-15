@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>KamiBook</title><link>https://kamibook.com/</link><description>Recent content on KamiBook</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Example Person</copyright><lastBuildDate>Sun, 15 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://kamibook.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Iptables：修改源IP</title><link>https://kamibook.com/p/iptablessnat/</link><pubDate>Sun, 15 Oct 2023 00:00:00 +0000</pubDate><guid>https://kamibook.com/p/iptablessnat/</guid><description>&lt;h3 id="关闭原防火墙">关闭原防火墙&lt;/h3>
+&lt;p>操作环境&lt;/p>
+&lt;p>• Almalinux9&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">systemctl stop firewalld
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl disable firewalld
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="安装iptables-services">安装iptables-services&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">yum install iptables-services -y #安装iptables
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl start iptables #启动
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">systemctl enable iptables #开机启动
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="开启端口非必须">开启端口（非必须）&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport 10000:50000 -j ACCEPT
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">iptables -I INPUT -m state --state NEW -m udp -p udp --dport 10000:50000 -j ACCEPT
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="创建用户">创建用户&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">useradd -r a1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">useradd -r a2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">useradd -r a3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">useradd -r a4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">useradd -r a5
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="修改用户源ip">修改用户源IP&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">iptables -t nat -A POSTROUTING -m owner --uid-owner a1 -j SNAT --to-source 1.1.1.1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>备注：以该用户启动的程序，TCP出网IP为设定的IP，一般情况不支持UDP。&lt;/p>
+&lt;h3 id="保存规则">保存规则&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">service iptables save
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item><item><title>Golang跨平台编译</title><link>https://kamibook.com/p/golang/</link><pubDate>Thu, 12 Oct 2023 00:00:00 +0000</pubDate><guid>https://kamibook.com/p/golang/</guid><description>&lt;h3 id="golang-跨平台编译">Golang 跨平台编译&lt;/h3>
+&lt;h3 id="简介">简介&lt;/h3>
+&lt;p>Golang作为一个跨平台编程语言，提供了简易用的方式进行跨平台编译，以下将介绍如何在Linux系统上编译生成多个平台的可执行程序。&lt;/p>
+&lt;h3 id="准备工作">准备工作&lt;/h3>
+&lt;p>操作环境&lt;/p>
+&lt;p>• Golang&lt;br>
+• Linux x86_64&lt;/p>
+&lt;h3 id="设置环境变量">设置环境变量&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">CGO_ENABLED=0 // 禁用CGO
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">GOOS=windows // 目标平台是windows
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">GOARCH=amd64 // 目标处理器架构是amd64
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="编译">编译&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">go build
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="其它平台">其它平台&lt;/h3>
+&lt;p>查询Golang支持的平台跟架构&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">go tool dist list
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>输出&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">aix/ppc64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">android/386
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">android/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">android/arm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">android/arm64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">darwin/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">darwin/arm64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dragonfly/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">freebsd/386
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">freebsd/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">freebsd/arm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">freebsd/arm64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">illumos/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ios/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ios/arm64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">js/wasm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/386
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/arm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/arm64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/loong64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/mips
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/mips64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/mips64le
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/mipsle
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/ppc64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/ppc64le
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/riscv64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/s390x
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">netbsd/386
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">netbsd/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">netbsd/arm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">netbsd/arm64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">openbsd/386
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">openbsd/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">openbsd/arm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">openbsd/arm64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">openbsd/mips64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">plan9/386
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">plan9/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">plan9/arm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">solaris/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">windows/386
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">windows/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">windows/arm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">windows/arm64
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="windows平台终端设置变量">Windows平台终端设置变量&lt;/h3>
+&lt;h4 id="powershell">PowerShell&lt;/h4>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">$env:CGO_ENABLED=&amp;#34;0&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$env:GOOS=&amp;#34;linux&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$env:GOARCH=&amp;#34;amd64&amp;#34;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="cmd">CMD&lt;/h4>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">SET CGO_ENABLED=0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SET GOOS=darwin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SET GOARCH=amd64
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item><item><title>RUST跨平台编译</title><link>https://kamibook.com/p/rust/</link><pubDate>Thu, 12 Oct 2023 00:00:00 +0000</pubDate><guid>https://kamibook.com/p/rust/</guid><description>&lt;h3 id="简介">简介&lt;/h3>
+&lt;p>交叉编译就是在一个平台上可以编译生成另一个平台的可执行文件。主要介绍如何在Linux系统上编译生成多个系统的可执行文件。&lt;/p>
+&lt;h3 id="准备工作">准备工作&lt;/h3>
+&lt;p>操作环境&lt;/p>
+&lt;p>• Rust&lt;br>
+• Linux x86_64&lt;/p>
+&lt;h3 id="添加target">添加Target&lt;/h3>
+&lt;h4 id="首先查询支持的target">首先查询支持的Target&lt;/h4>
+&lt;p>已安装会在后面显示(installed)。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">rustup target list
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>得出以下&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;span class="lnt">64
+&lt;/span>&lt;span class="lnt">65
+&lt;/span>&lt;span class="lnt">66
+&lt;/span>&lt;span class="lnt">67
+&lt;/span>&lt;span class="lnt">68
+&lt;/span>&lt;span class="lnt">69
+&lt;/span>&lt;span class="lnt">70
+&lt;/span>&lt;span class="lnt">71
+&lt;/span>&lt;span class="lnt">72
+&lt;/span>&lt;span class="lnt">73
+&lt;/span>&lt;span class="lnt">74
+&lt;/span>&lt;span class="lnt">75
+&lt;/span>&lt;span class="lnt">76
+&lt;/span>&lt;span class="lnt">77
+&lt;/span>&lt;span class="lnt">78
+&lt;/span>&lt;span class="lnt">79
+&lt;/span>&lt;span class="lnt">80
+&lt;/span>&lt;span class="lnt">81
+&lt;/span>&lt;span class="lnt">82
+&lt;/span>&lt;span class="lnt">83
+&lt;/span>&lt;span class="lnt">84
+&lt;/span>&lt;span class="lnt">85
+&lt;/span>&lt;span class="lnt">86
+&lt;/span>&lt;span class="lnt">87
+&lt;/span>&lt;span class="lnt">88
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">aarch64-apple-darwin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">aarch64-apple-ios
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">aarch64-apple-ios-sim
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">aarch64-linux-android
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">aarch64-pc-windows-msvc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">aarch64-unknown-fuchsia
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">aarch64-unknown-linux-gnu
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">aarch64-unknown-linux-musl
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">aarch64-unknown-none
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">aarch64-unknown-none-softfloat
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">aarch64-unknown-uefi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">arm-linux-androideabi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">arm-unknown-linux-gnueabi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">arm-unknown-linux-gnueabihf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">arm-unknown-linux-musleabi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">arm-unknown-linux-musleabihf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">armebv7r-none-eabi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">armebv7r-none-eabihf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">armv5te-unknown-linux-gnueabi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">armv5te-unknown-linux-musleabi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">armv7-linux-androideabi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">armv7-unknown-linux-gnueabi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">armv7-unknown-linux-gnueabihf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">armv7-unknown-linux-musleabi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">armv7-unknown-linux-musleabihf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">armv7a-none-eabi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">armv7r-none-eabi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">armv7r-none-eabihf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">asmjs-unknown-emscripten
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">i586-pc-windows-msvc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">i586-unknown-linux-gnu
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">i586-unknown-linux-musl
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">i686-linux-android
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">i686-pc-windows-gnu
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">i686-pc-windows-msvc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">i686-unknown-freebsd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">i686-unknown-linux-gnu
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">i686-unknown-linux-musl
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">i686-unknown-uefi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">loongarch64-unknown-linux-gnu
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mips-unknown-linux-musl
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mips64-unknown-linux-muslabi64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mips64el-unknown-linux-muslabi64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mipsel-unknown-linux-musl
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nvptx64-nvidia-cuda
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">powerpc-unknown-linux-gnu
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">powerpc64-unknown-linux-gnu
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">powerpc64le-unknown-linux-gnu
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">riscv32i-unknown-none-elf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">riscv32imac-unknown-none-elf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">riscv32imc-unknown-none-elf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">riscv64gc-unknown-linux-gnu
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">riscv64gc-unknown-none-elf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">riscv64imac-unknown-none-elf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">s390x-unknown-linux-gnu
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sparc64-unknown-linux-gnu
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sparcv9-sun-solaris
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">thumbv6m-none-eabi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">thumbv7em-none-eabi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">thumbv7em-none-eabihf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">thumbv7m-none-eabi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">thumbv7neon-linux-androideabi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">thumbv7neon-unknown-linux-gnueabihf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">thumbv8m.base-none-eabi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">thumbv8m.main-none-eabi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">thumbv8m.main-none-eabihf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wasm32-unknown-emscripten
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wasm32-unknown-unknown
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wasm32-wasi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wasm32-wasi-preview1-threads
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-apple-darwin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-apple-ios
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-fortanix-unknown-sgx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-linux-android
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-pc-solaris
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-pc-windows-gnu
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-pc-windows-msvc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-sun-solaris
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-unknown-freebsd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-unknown-fuchsia
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-unknown-illumos
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-unknown-linux-gnu
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-unknown-linux-gnux32
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-unknown-linux-musl
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-unknown-netbsd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-unknown-none
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-unknown-redox
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">x86_64-unknown-uefi
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="添加">添加&lt;/h4>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">rustup target add x86_64-unknown-linux-musl
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="编译">编译&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">cargo build --release --target=x86_64-unknown-linux-musl
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item><item><title>PING工具：RNP</title><link>https://kamibook.com/p/rnp/</link><pubDate>Wed, 11 Oct 2023 00:00:00 +0000</pubDate><guid>https://kamibook.com/p/rnp/</guid><description>&lt;h2 id="作者githubhttpsgithubcomr12frnp">作者&lt;a class="link" href="https://github.com/r12f/rnp" target="_blank" rel="noopener"
+>GITHUB&lt;/a>&lt;/h2>
+&lt;h3 id="简单示例">简单示例&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">PS D:\bin&amp;gt; ./rnp.exe 1.1.1.1:22
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Rnp - r12f (r12f.com, github.com/r12f) - A simple layer 4 ping tool for cloud.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Start testing TCP 1.1.1.1:22:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reaching TCP 1.1.1.1:22 from 192.168.31.86:18485 succeeded: RTT=23.80ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reaching TCP 1.1.1.1:22 from 192.168.31.86:18486 succeeded: RTT=23.83ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reaching TCP 1.1.1.1:22 from 192.168.31.86:18487 succeeded: RTT=20.84ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reaching TCP 1.1.1.1:22 from 192.168.31.86:18488 succeeded: RTT=24.95ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== Connect statistics for TCP 1.1.1.1:22 ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">- Connects: Sent = 4, Succeeded = 4, Failed = 0 (0.00%).
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">- Round trip time: Minimum = 20.84ms, Maximum = 24.95ms, Average = 23.35ms.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PS D:\bin&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="多线程并发并省略输出">多线程并发并省略输出&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">PS D:\bin&amp;gt; ./rnp.exe 1.1.1.1:22 -p 10 -n 100 -q
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Rnp - r12f (r12f.com, github.com/r12f) - A simple layer 4 ping tool for cloud.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Start testing TCP 1.1.1.1:22:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">100 pings finished.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== Connect statistics for TCP 1.1.1.1:22 ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">- Connects: Sent = 100, Succeeded = 100, Failed = 0 (0.00%).
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">- Round trip time: Minimum = 17.49ms, Maximum = 28.72ms, Average = 23.27ms.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PS D:\bin&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>参数&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">-p 10 #设置线程数，默认1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-n 100 # 设置PING数，默认4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-q #设置省略PING输出，默认全部输出
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item><item><title>终端简易设置代理</title><link>https://kamibook.com/p/httpproxy/</link><pubDate>Wed, 11 Oct 2023 00:00:00 +0000</pubDate><guid>https://kamibook.com/p/httpproxy/</guid><description>&lt;h3 id="linux">Linux&lt;/h3>
+&lt;h4 id="http-proxy">HTTP PROXY&lt;/h4>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="k">export&lt;/span> &lt;span class="n">ALL_PROXY&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">http&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="mf">127.0&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">0.1&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">1080&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="socks5-proxy">SOCKS5 PROXY&lt;/h4>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="k">export&lt;/span> &lt;span class="n">ALL_PROXY&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">socks5&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="mf">127.0&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">0.1&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">1080&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="取消代理">取消代理&lt;/h4>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">unset http_proxy
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">unset https_proxy
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="windows">Windows&lt;/h3>
+&lt;h4 id="powershell">PowerShell&lt;/h4>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">$env:ALL_PROXY=&amp;#34;http://127.0.0.1:7890&amp;#34;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>取消代理&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">$env:ALL_PROXY=&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="cmd">CMD&lt;/h4>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">set http_proxy=http://127.0.0.1:1080
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set https_proxy=http://127.0.0.1:1080
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>取消代理&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">set http_proxy=
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set https_proxy=
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="认证">认证&lt;/h3>
+&lt;p>适用于以上全部&lt;/p>
+&lt;p>&lt;code>http://127.0.0.1:1080&lt;/code> 改为 &lt;code> http://user:pass@127.0.0.1:1080&lt;/code>&lt;/p>
+&lt;h3 id="注意部分软件是不走该proxy需要根据软件另行设置">注意：部分软件是不走该Proxy，需要根据软件另行设置。&lt;/h3></description></item><item><title>档案</title><link>https://kamibook.com/archives/</link><pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate><guid>https://kamibook.com/archives/</guid><description/></item><item><title>链接</title><link>https://kamibook.com/links/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kamibook.com/links/</guid><description>&lt;p>To use this feature, add &lt;code>links&lt;/code> section to frontmatter.&lt;/p>
+&lt;p>This page&amp;rsquo;s frontmatter:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">links&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">title&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">GitHub&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">description&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">GitHub is the world&amp;#39;s largest software development platform.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">website&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://github.com&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">title&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">TypeScript&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">description&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">website&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://www.typescriptlang.org&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ts-logo-128.jpg&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;code>image&lt;/code> field accepts both local and external images.&lt;/p></description></item><item><title>搜索</title><link>https://kamibook.com/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kamibook.com/search/</guid><description/></item></channel></rss>

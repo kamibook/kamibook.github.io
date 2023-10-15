@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>golang on KamiBook</title><link>https://kamibook.com/tags/golang/</link><description>Recent content in golang on KamiBook</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Example Person</copyright><lastBuildDate>Thu, 12 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://kamibook.com/tags/golang/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang跨平台编译</title><link>https://kamibook.com/p/golang/</link><pubDate>Thu, 12 Oct 2023 00:00:00 +0000</pubDate><guid>https://kamibook.com/p/golang/</guid><description>&lt;h3 id="golang-跨平台编译">Golang 跨平台编译&lt;/h3>
+&lt;h3 id="简介">简介&lt;/h3>
+&lt;p>Golang作为一个跨平台编程语言，提供了简易用的方式进行跨平台编译，以下将介绍如何在Linux系统上编译生成多个平台的可执行程序。&lt;/p>
+&lt;h3 id="准备工作">准备工作&lt;/h3>
+&lt;p>操作环境&lt;/p>
+&lt;p>• Golang&lt;br>
+• Linux x86_64&lt;/p>
+&lt;h3 id="设置环境变量">设置环境变量&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">CGO_ENABLED=0 // 禁用CGO
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">GOOS=windows // 目标平台是windows
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">GOARCH=amd64 // 目标处理器架构是amd64
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="编译">编译&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">go build
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="其它平台">其它平台&lt;/h3>
+&lt;p>查询Golang支持的平台跟架构&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">go tool dist list
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>输出&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">aix/ppc64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">android/386
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">android/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">android/arm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">android/arm64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">darwin/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">darwin/arm64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dragonfly/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">freebsd/386
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">freebsd/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">freebsd/arm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">freebsd/arm64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">illumos/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ios/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ios/arm64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">js/wasm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/386
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/arm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/arm64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/loong64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/mips
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/mips64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/mips64le
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/mipsle
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/ppc64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/ppc64le
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/riscv64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">linux/s390x
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">netbsd/386
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">netbsd/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">netbsd/arm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">netbsd/arm64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">openbsd/386
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">openbsd/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">openbsd/arm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">openbsd/arm64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">openbsd/mips64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">plan9/386
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">plan9/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">plan9/arm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">solaris/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">windows/386
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">windows/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">windows/arm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">windows/arm64
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="windows平台终端设置变量">Windows平台终端设置变量&lt;/h3>
+&lt;h4 id="powershell">PowerShell&lt;/h4>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">$env:CGO_ENABLED=&amp;#34;0&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$env:GOOS=&amp;#34;linux&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$env:GOARCH=&amp;#34;amd64&amp;#34;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="cmd">CMD&lt;/h4>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">SET CGO_ENABLED=0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SET GOOS=darwin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SET GOARCH=amd64
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item></channel></rss>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ping on KamiBook</title><link>https://kamibook.com/tags/ping/</link><description>Recent content in Ping on KamiBook</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Example Person</copyright><lastBuildDate>Wed, 11 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://kamibook.com/tags/ping/index.xml" rel="self" type="application/rss+xml"/><item><title>PING工具：RNP</title><link>https://kamibook.com/p/rnp/</link><pubDate>Wed, 11 Oct 2023 00:00:00 +0000</pubDate><guid>https://kamibook.com/p/rnp/</guid><description>&lt;h2 id="作者githubhttpsgithubcomr12frnp">作者&lt;a class="link" href="https://github.com/r12f/rnp" target="_blank" rel="noopener"
+>GITHUB&lt;/a>&lt;/h2>
+&lt;h3 id="简单示例">简单示例&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">PS D:\bin&amp;gt; ./rnp.exe 1.1.1.1:22
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Rnp - r12f (r12f.com, github.com/r12f) - A simple layer 4 ping tool for cloud.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Start testing TCP 1.1.1.1:22:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reaching TCP 1.1.1.1:22 from 192.168.31.86:18485 succeeded: RTT=23.80ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reaching TCP 1.1.1.1:22 from 192.168.31.86:18486 succeeded: RTT=23.83ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reaching TCP 1.1.1.1:22 from 192.168.31.86:18487 succeeded: RTT=20.84ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reaching TCP 1.1.1.1:22 from 192.168.31.86:18488 succeeded: RTT=24.95ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== Connect statistics for TCP 1.1.1.1:22 ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">- Connects: Sent = 4, Succeeded = 4, Failed = 0 (0.00%).
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">- Round trip time: Minimum = 20.84ms, Maximum = 24.95ms, Average = 23.35ms.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PS D:\bin&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="多线程并发并省略输出">多线程并发并省略输出&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">PS D:\bin&amp;gt; ./rnp.exe 1.1.1.1:22 -p 10 -n 100 -q
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Rnp - r12f (r12f.com, github.com/r12f) - A simple layer 4 ping tool for cloud.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Start testing TCP 1.1.1.1:22:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">100 pings finished.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== Connect statistics for TCP 1.1.1.1:22 ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">- Connects: Sent = 100, Succeeded = 100, Failed = 0 (0.00%).
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">- Round trip time: Minimum = 17.49ms, Maximum = 28.72ms, Average = 23.27ms.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PS D:\bin&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>参数&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">-p 10 #设置线程数，默认1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-n 100 # 设置PING数，默认4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-q #设置省略PING输出，默认全部输出
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item></channel></rss>
